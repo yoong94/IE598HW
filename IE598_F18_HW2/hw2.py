@@ -7,9 +7,27 @@ Created on Sun Sep  9 00:58:55 2018
 """
 from sklearn import datasets
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
 import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import ListedColormap
+
+iris = datasets.load_iris()
+X = iris.data[:, [2, 3]]
+y = iris.target 
+X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.3, random_state=1, stratify=y)
+
+from sklearn.preprocessing import StandardScaler
+sc = StandardScaler()
+sc.fit(X_train)
+
+X_train_std = sc.transform(X_train)
+X_test_std = sc.transform(X_test)
+X_combined_std = np.vstack((X_train_std, X_test_std))
+y_combined = np.hstack((y_train, y_test))
+
+
 def plot_decision_regions(X, y, classifier, test_idx=None,
                              resolution=0.02):
        # setup marker generator and color map
@@ -43,16 +61,7 @@ def plot_decision_regions(X, y, classifier, test_idx=None,
 from sklearn.preprocessing import StandardScaler
 sc = StandardScaler()
 sc.fit(X_train)
-X_train_std = sc.transform(X_train)
-X_test_std = sc.transform(X_test)
-X_combined_std = np.vstack((X_train_std, X_test_std))
-y_combined = np.hstack((y_train, y_test))
 
-iris = datasets.load_iris()
-X = iris.data[:, [2, 3]]
-y = iris.target 
-X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.3, random_state=1, stratify=y)
 def gini(p):
     return (p)*(1 - (p)) + (1 - p) * (1 - (1 - p))
 
@@ -133,3 +142,21 @@ plt.xlabel('petal length [standardized]')
 plt.ylabel('petal width [standardized]')
 plt.legend(loc='upper left')
 plt.show()
+
+k_range= range(1, 26)
+scores = []
+for k in k_range:
+    knn = KNeighborsClassifier(n_neighbors = k)
+    knn.fit(X_train_std, y_train)
+    y_pred = knn.predict(X_test_std)
+    scores.append(accuracy_score(y_test, y_pred))
+
+plt.scatter(k_range, scores, c = 'red')
+plt.xlabel("number of k")
+plt.ylabel("accuracy_score")
+
+
+print("\n")
+print("My name is Zhenqin Yuan")
+print("My NetID is: zyuan10")
+print("I hereby certify that I have read the University policy on Academic Integrity and that I am not in violation.")
