@@ -150,13 +150,22 @@ for k in k_range:
     knn.fit(X_train_std, y_train)
     y_pred = knn.predict(X_test_std)
     scores.append(accuracy_score(y_test, y_pred))
+    
+bk = max(scores)
+k_list = []
+for i, j in zip(k_range, scores):
+    if j == bk:
+        k_list.append(i)
+        
+    
+print ("The best choices of k are : {}".format(k_list))
 
 plt.scatter(k_range, scores, c = 'red')
 plt.xlabel("number of k")
 plt.ylabel("accuracy_score")
 
 
-print("\n")
+
 print("My name is Zhenqin Yuan")
 print("My NetID is: zyuan10")
 print("I hereby certify that I have read the University policy on Academic Integrity and that I am not in violation.")
