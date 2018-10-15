@@ -64,7 +64,7 @@ plt.title('Feature Importance')
 plt.bar(range(X_train.shape[1]),
 importances[indices],align='center')
 plt.xticks(range(X_train.shape[1]),
-feat_labels, rotation=90)
+feat_labels[indices], rotation=90)
 plt.xlim([-1, X_train.shape[1]])
 
 print("My name is Zhenqin Yuan")
